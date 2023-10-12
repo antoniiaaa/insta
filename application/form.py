@@ -15,10 +15,19 @@ class SignUpForm(FlaskForm):
     submit = SubmitField("Sign Up")
 
 class EditProfile(FlaskForm):
-    pass
+    username = StringField('Username', validators=[DataRequired(), Length(min=4, max=128)])
+    # email = StringField('Email', validators=[DataRequired(), Email(), Length(max=128)])
+    bio = TextAreaField('Bio', validators=[Length(max=256)])
+    profile_pic = FileField('Profile Picture', validators=[FileAllowed(['jpg', 'png'], 'Images only (.jpg, .png)')])
+    submit = SubmitField('Save Changes')
+
 
 class CreatePost(FlaskForm):
-    pass
+    caption = TextAreaField('Caption', validators=[DataRequired(), Length(max=256)])
+    image = FileField('Upload Image', validators=[FileAllowed(['jpg', 'png'], 'Images only (.jpg, .png)')])
+    submit = SubmitField('Create Post')
 
 class EditPost(FlaskForm):
-    pass
+    caption = TextAreaField('Caption', validators=[DataRequired(), Length(max=256)])
+    image = FileField('Edit Image', validators=[FileAllowed(['jpg', 'png'], 'Images only (.jpg, .png)')])
+    submit = SubmitField('Save Changes')
