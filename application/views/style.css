@@ -1,64 +1,27 @@
-body{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-}
+Body {  
+    /* background-color: pink;   */
+    width: 430px;
+    height: 932px;
+}  
 
-section.left{
-    width: 600px;
-    height: 100%;
-    background-color: aqua;
+h1{
+    text-align: center;
+    font-size: 30px;
     display: flex;
-    flex-direction: column;
-    /* justify-content: center; */
-    margin-left: 20px;
-}
-section.left>h1{
-    margin-left: 20px;
-    letter-spacing: 3px;
-    /* margin-top: 40px; */
-}
-section.left>p{
-    margin-left: 20px;
-}
-section.left>div.isi{
-    /* margin-top: 10px; */
-    /* background-color: red; */
-    height: 3500px;
-    margin-top: 0;
-    
-}
-div.isi>p{
-    color: black;
-    /* display: flex;
-    flex-direction: column; */
-    width: 100%;
-    height: 50%;
-    /* background-color: red; */
-    margin-left: 20px;
-}
-div.down>p{
-    margin-left: 20px;
-    padding-top: 150px;
-}
-
-section.mainposts{
-    display: flex;
-    height: 100%;
-    width: 2500px;
-    flex-direction: column;
-    /* flex-wrap: wrap; */
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
-    /* margin-left: 280px; */
+    align-content: center;
+    vertical-align: middle;
+    padding-top: 10px;
 }
-
-/* section.right{
-    width: 25%;
-    height: 100%;
-    background-color: red;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;   
-} */
+img>.profile{
+    border-radius: 25px;
+    width: 50px;
+    height: 50px;
+    /* border: none; */
+}
+section.pembatas{
+    width: 100%;
+    height: 1px;
+    background-color: gray;
+}
