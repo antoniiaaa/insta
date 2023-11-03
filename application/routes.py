@@ -32,10 +32,16 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route('/profile')
+# @app.route('/profile')
+# @login_required
+# def profile():
+#     return render_template('profile.html', title=f'{current_user.fullname} Profile')
+
+@app.route('/<string:username>')
 @login_required
-def profile():
+def profile(username):
     return render_template('profile.html', title=f'{current_user.fullname} Profile')
+
 
 @app.route('/', methods=['GET', 'POST'])
 @login_required
