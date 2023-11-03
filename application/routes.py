@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app
@@ -52,7 +52,8 @@ def index():
         db.session.commit()
         flash('Your image has been posted', 'success')
 
-    posts = Post.query.filter_by(author_id = current_user.id).all()
+    page = request.args.get('page', 1, type=int)
+    posts = Post.query.filter_by(author_id = current_user.id).order_by(Post.post_date.desc()).paginate(page=page, per_page=3)
 
     return render_template('index.html', title='Home', form=form, posts=posts)
 

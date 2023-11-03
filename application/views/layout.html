@@ -14,9 +14,19 @@
         }
         section.content{
             min-height: calc(100vh - 100px);
+            width: 576px;
+            margin: 0px auto;
         }
         header ul li{
             display: inline-block;
+        }
+        div.new-post-box{
+            padding: 5px;
+        }
+        div.post-container{
+            border: 1px black solid;
+            margin: 50px auto;
+            text-align: center;
         }
     </style>
     {% if title %}
@@ -26,12 +36,13 @@
     {% endif %}
 </head>
 <body>
-    {% if current_user.is_authenticated %}
-        {% include "components/login-header.html" %}
-    {% else %}
-        {% include "components/logout-header.html" %}
-    {% endif %}
-    <div class="alert-box">
+    <section class="content">
+        {% if current_user.is_authenticated %}
+            {% include "components/login-header.html" %}
+        {% else %}
+            {% include "components/logout-header.html" %}
+        {% endif %}
+        <div class="alert-box">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -41,10 +52,9 @@
                 {% endfor%}
             {% endif %}
         {% endwith %}
-    </div>
-    <section class="content">
+        </div>
         {% block content %}{% endblock content %}
+        {% include "components/footer.html" %}
     </section>
-    {% include "components/footer.html" %}
 </body>
 </html>
