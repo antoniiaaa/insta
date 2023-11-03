@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <div class="">
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <fieldset class="">
+                <legend class="">Edit Profile</legend>
+
+                <div class="">
+                    <form method="POST" enctype="multipart/form-data">
+                        {{ form.csrf_token }}
+                        {{ form.profile_pic.label(class="") }}<br>
+                        {{ form.profile_pic }}<br><br>
+                        <input type="submit" value="Submit">
+                    </form>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+{% endblock content %}
