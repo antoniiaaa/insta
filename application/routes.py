@@ -20,7 +20,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and password == user.password:
             login_user(user)
-            return redirect(url_for('profile'))
+            return redirect(url_for('profile', username=username))
         else:
             flash('Invalid username or password', 'error')
 
@@ -40,7 +40,9 @@ def logout():
 @app.route('/<string:username>')
 @login_required
 def profile(username):
-    return render_template('profile.html', title=f'{current_user.fullname} Profile')
+
+    posts = current_user.posts
+    return render_template('profile.html', title=f'{current_user.fullname} Profile', posts=posts)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -61,11 +63,31 @@ def index():
     page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(author_id = current_user.id).order_by(Post.post_date.desc()).paginate(page=page, per_page=3)
 
+    #without paginate (pages)
+    #posts = current_user.posts
+
     return render_template('index.html', title='Home', form=form, posts=posts)
 
-@app.route('/signup')
+@app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignUpForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        fullname = form.fullname.data
+        email = form.email.data
+        password = form.password.data
+
+        user = User.query.filter_by(username=username).first()
+        if user:
+            flash('That username is already taken. Please choose a different one.', 'error')
+        else:
+            new_user = User(username=username, password=password, fullname=fullname, email=email)
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Account created', 'success')
+            return redirect(url_for('login'))
+   
     return render_template('signup.html', title='SignUp', form=form)
 
 @app.route('/about')

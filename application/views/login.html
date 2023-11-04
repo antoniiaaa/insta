@@ -1,40 +1,41 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <div class="">
+    <div class="container">
         <form action="" method="post">
             {{ form.hidden_tag() }}
-            <fieldset class="">
-                <legend class="">Login</legend>
-
-                <div class="">
+            <center><h1>INSSSTA</h1></center>
+            <fieldset class="info" style="border: none;">
+                <div class="" >
                     {{ form.username.label(class="") }}
-
-                    {% if form.username.errors %}
-                        {{ form.username(class="") }}
-                        <div class="">
-                            {% for error in form.username.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.username(class="") }}
-                    {% endif %}
+                    <div class="">
+                        {% if form.username.errors %}
+                            {{ form.username(class="") }}
+                            <div class="">
+                                {% for error in form.username.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %} 
+                            {{ form.username(class="") }}
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div class="">
                     {{ form.password.label(class="") }}
-
-                    {% if form.password.errors %}
-                        {{ form.password(class="") }}
-                        <div class="">
-                            {% for error in form.password.errors %}
-                                <span>{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                    {% else %}
-                        {{ form.password(class=" ") }}
-                    {% endif %}
+                    <div class="">
+                        {% if form.password.errors %}
+                            {{ form.password(class="") }}
+                            <div class="">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.password(class=" ") }}
+                        {% endif %}
+                    </div>
                 </div>
             </fieldset>
             <div class="">
