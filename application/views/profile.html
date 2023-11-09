@@ -10,10 +10,14 @@
             <p>{{ current_user.bio }}</p>
             <p>Following: {{ current_user.following_users|length }}</p>
             <p>Follower: {{ current_user.follower_users|length }}</p>
+            <a class="btn btn-primary" href="{{url_for('edit')}}">EDIT PROFILE</a>
         </div>
     </div>
 
     <div class="image-container">
+        <div class="createPosts">
+            <a class="toCreate" href="{{ url_for('create') }}">CREATE POSTS</a>
+        </div>
         {% for post in posts %}
         <div class="image-item"><img src="{{ url_for('static', filename='' + post.photo) }}" alt="Post Image"></div>
         {% endfor %}

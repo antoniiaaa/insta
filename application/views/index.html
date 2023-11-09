@@ -1,91 +1,19 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>INSSSTA</title>
-    <link rel="stylesheet" href="./style.css">
-</head>
-<body>
-    <header>
-        <h1>INSSSTA</h1>
-    </header>
-    <section class="pembatas"></section>
-    <section class="one">
-        <div class="users">
-            <img src="squids foto.jpg" alt="" class="profile" width="50px" height="50px">
-            <p><strong>useraa</strong></p>
-        </div>
-        <div class="photo">
-            <img src="squids foto.jpg" alt="" width="430px" height="430px">
-            <p><strong>@userBB</strong> AAAAAAAAAAAA</p>
-        </div>
-    </section>
-    <section class="pembatas"></section>
-    <section class="two">
-        <div class="users">
-            <img src="squids foto.jpg" alt="" class="profile" width="50px" height="50px">
-            <p><strong>userBB</strong></p>
-        </div>
-        <div class="photo">
-            <img src="squids foto.jpg" alt="" width="430px" height="430px">
-            <p><strong>@useraa</strong> AAAAAAAAAAAA</p>
-        </div>
-    </section>
-</body>
-</html> -->
-
-<style>
-    Body {  
-        /* background-color: pink;   */
-        width: 430px;
-        height: 932px;  
-    }     
-
-    h1{
-        text-align: center;
-        font-size: 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-        vertical-align: middle;
-        padding-top: 10px;
-    }
-    img>.profile{
-        border-radius: 25px;
-        width: 50px;
-        height: 50px;
-        /* border: none; */
-    }
-</style>
+{% extends 'layout.html' %}
 
 {% block content %}
-    <header>
-        <h1>INSSSTA</h1>
-    </header>
-    <div class="post-container">
+    <div class="posts-container">
         {% for user in users %}
-            <div class="info">
+            <div class="image-item">
                 <img src="{{ url_for('static', filename='' + user.profile_pic) }}" alt="">
                 <p>{{ user.username }}</p>
             </div>
         {% endfor %}
         {% for post in posts %}
-            <div class="post">
+            <div class="image-item">
                 <img src="{{ url_for('static', filename='' + post.photo) }}" alt="Post Image">
                 <p>{{ post.caption }}</p>
-                <p>{{ post.post_date }}</p>
+                <!-- <p>{{ post.post_date }}</p> -->
             </div>
-        {% endfor %}
-    </div>
-    <div class="pagination-box">
-        {% for page_number in posts.iter_pages() %}
-            {% if page_number == posts.page %}
-                <a href="{{ url_for('index', page=page_number) }}" style="color: black;">{{ page_number }}</a>
-            {% else %}
-                <a href="{{ url_for('index', page=page_number) }}" style="color: gray;">{{ page_number }}</a>
-            {% endif %}
         {% endfor %}
     </div>
 {% endblock content %}
