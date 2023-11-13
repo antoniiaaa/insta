@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, make_response, jsonify
 from flask_login import login_user, login_required, logout_user, current_user
 
 from application import app
@@ -81,10 +81,9 @@ def index():
         flash('Your image has been posted', 'success')
 
     # page = request.args.get('page', 1, type=int)
-    # posts = Post.query.filter_by(author_id = current_user.id).order_by(Post.post_date.desc()).paginate(page=page, per_page=3)
-
+    posts = Post.query.filter_by(author_id = current_user.id).order_by(Post.post_date.desc())
     # without paginate (pages)
-    posts = current_user.posts
+    # posts = current_user.posts
 
     return render_template('index.html', title='Home', form=form, posts=posts)
 
@@ -114,7 +113,20 @@ def signup():
 def about():
     return render_template('about.html', title='About')
 
-@app.route('/createPost')
+@app.route('/like/<int:post_id>', methods=['POST'])
+@login_required
+def like(post_id):
+    like = Like.query.filter_by(user_id=current_user, post_id=post_id).first()
+    if not like:
+        like = Like(user_id=current_user.id, post_id=post_id)
+        db.session.add(like)
+        db.session.commit()
+        return make_response(200, jsonify({"status" : True}))
+    db.session.remove(like)
+    db.session.commit()
+    return make_response(200, jsonify({"status" : False}))
+
+@app.route('/createPost', methods=['GET', 'POST'])
 @login_required
 def create():
     form = CreatePostForm()
@@ -128,9 +140,10 @@ def create():
         db.session.add(post)
         db.session.commit()
         flash('Your image has been posted', 'success')
+        return redirect(url_for('index'))
     posts = current_user.posts
 
-    return render_template('index.html', title='Home', form=form, posts=posts)
+    return render_template('createPosts.html', title='Home', form=form, posts=posts)
 
 
 if __name__ == '__main__':

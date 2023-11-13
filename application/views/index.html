@@ -2,18 +2,39 @@
 
 {% block content %}
     <div class="posts-container">
-        {% for user in users %}
-            <div class="image-item">
-                <img src="{{ url_for('static', filename='' + user.profile_pic) }}" alt="">
-                <p>{{ user.username }}</p>
-            </div>
-        {% endfor %}
         {% for post in posts %}
-            <div class="image-item">
-                <img src="{{ url_for('static', filename='' + post.photo) }}" alt="Post Image">
-                <p>{{ post.caption }}</p>
-                <!-- <p>{{ post.post_date }}</p> -->
+        <div class="post">
+            <div class="post-header">
+                <img src="{{ url_for('static', filename='images/' + post.posts_owner.profile_pic) }}" alt="Post Owner" style="height: 30px; width: 30px;">
+                <h2>{{ post.posts_owner.username }}</h2>
             </div>
+            <img src="{{ url_for('static', filename='' + post.photo) }}" alt="Post Image">
+            <p>{{ post.caption }}</p>
+
+            <div class="post-footer">
+                <span id="likeBtn" data-post-id="{{ post.id }}">Likes</span><span id="likeCounter"> {{ post.likes | length }} </span>
+                <span id="commentBtn" data-post-id="{{ post.id }}">Comments</span><span id="commentCounter"> {{ post.comments | length }}</span>
+            </div>
+        </div>
         {% endfor %}
     </div>
+    <script>
+        document.querySelectorAll("#LikeBtn").forEach(btn => {
+            btn.addEventListener('click', function(){
+                console.log(this.dataset.postId);
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', `/like/${this.dataset.postId}`, true);
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+
+                xhr.onload = function(){
+                    if (xhr.status === 200){
+                        const response = JSON.perse(xhr.responseText);
+                        console.log(response.status);
+                    }
+                };
+
+                xhr.send();
+            })
+        })
+    </script>
 {% endblock content %}
