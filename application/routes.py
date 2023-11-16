@@ -70,16 +70,6 @@ def profile(username):
 def index():
     form = CreatePostForm()
 
-    if form.validate_on_submit():
-        post = Post(
-            author_id = current_user.id,
-            caption = form.caption.data
-        )
-        post.photo = save_image(form.post_pic.data)
-        db.session.add(post)
-        db.session.commit()
-        flash('Your image has been posted', 'success')
-
     # page = request.args.get('page', 1, type=int)
     posts = Post.query.filter_by(author_id = current_user.id).order_by(Post.post_date.desc())
     # without paginate (pages)
@@ -113,18 +103,21 @@ def signup():
 def about():
     return render_template('about.html', title='About')
 
-@app.route('/like/<int:post_id>', methods=['POST'])
+@app.route('/like', methods=['GET', 'POST'])
 @login_required
-def like(post_id):
-    like = Like.query.filter_by(user_id=current_user, post_id=post_id).first()
+def like():
+    data = request.json
+    post_id = int(data['postId'])
+    like = Like.query.filter_by(user_id=current_user.id, post_id=post_id).first()
     if not like:
         like = Like(user_id=current_user.id, post_id=post_id)
         db.session.add(like)
         db.session.commit()
-        return make_response(200, jsonify({"status" : True}))
-    db.session.remove(like)
+        return make_response(jsonify({"status" : True}), 200)
+
+    db.session.delete(like)
     db.session.commit()
-    return make_response(200, jsonify({"status" : False}))
+    return make_response(jsonify({"status" : False}), 200)
 
 @app.route('/createPost', methods=['GET', 'POST'])
 @login_required
@@ -145,6 +138,49 @@ def create():
 
     return render_template('createPosts.html', title='Home', form=form, posts=posts)
 
+@app.route('/forgotPass', methods=['GET', 'POST'])
+def forgotPass():
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        email = User.query.filter_by(email=email)
+    return render_template('forgotPassword.html', title='Forgot Password', form=form)
+
+@app.route('/resetPass', methods=['GET', 'POST'])
+@login_required
+def resetPass():
+    form = ResetPasswordForm()
+
+    if form.validate_on_submit():
+        user = User.query.get(current_user.id)
+        if user.password != form.old_password.data:
+            flash("ur old password is wrong")
+        user.password = form.new_password.data
+        user.password_Confirm = form.confirm_new_password.data
+
+        db.session.commit()
+        flash("password has been reset", 'success')
+        return redirect(url_for('profile', username=current_user.username))
+    
+    return render_template('resetPassword.html', title='Reset Password', form=form)
+
+
+@app.route('/editPost/<int:post_id>', methods=['GET', 'POST'])
+@login_required
+def edit_post(post_id):
+    form = EditPostForm()
+
+    post = Post.query.get(post_id)
+    if form.validate_on_submit():
+        post.caption = form.caption.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('index', username=current_user.username))
+
+    elif request.method == 'GET':
+        form.caption.data = post.caption
+
+    return render_template('editPost.html', title='Edit Post', form=form, post=post)
 
 if __name__ == '__main__':
     app.run(debug=True)

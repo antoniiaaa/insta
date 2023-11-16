@@ -11,6 +11,7 @@
             <p>Following: {{ current_user.following_users|length }}</p>
             <p>Follower: {{ current_user.follower_users|length }}</p>
             <a class="btn btn-primary" href="{{url_for('edit')}}">EDIT PROFILE</a>
+            <a href="{{ url_for('resetPass') }}" class="btn btn-primary">RESET PASSWORD</a>
         </div>
     </div>
 

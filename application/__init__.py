@@ -6,10 +6,12 @@ from flask_login import LoginManager
 from dotenv import load_dotenv
 import os
 from datetime import timedelta
+from flask_cors import CORS
 
 load_dotenv()
 
 app = Flask(__name__, template_folder = "views")
+cors = CORS(app)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DB_URI")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
