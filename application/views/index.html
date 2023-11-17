@@ -12,28 +12,27 @@
             <p>{{ post.caption }}</p>
 
             <div class="post-footer">
-                <span id="likeBtn" data-post-id="{{ post.id }}">Likes</span><span id="likeCounter"> {{ post.likes | length }} </span>
-                <span id="commentBtn" data-post-id="{{ post.id }}">Comments</span><span id="commentCounter"> {{ post.comments | length }}</span>
+                <span id="likeBtn" data-post-id="{{ post.id }}">💗</span><span id="likeCounter"> {{ post.likes | length }} </span>
+                <span id="commentBtn" data-post-id="{{ post.id }}">📄</span><span id="commentCounter"> {{ post.comments | length }}</span>
             </div>
             <a href="{{ url_for('edit_post', post_id=post.id) }}">EDIT POST</a>
         </div>
         {% endfor %}
     </div>
     <script>
-        document.querySelectorAll("#LikeBtn").forEach(btn => {
+        document.querySelectorAll("#likeBtn").forEach(btn => {
             btn.addEventListener('click', function(){
-                console.log(this.dataset.postId);
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', 'http://127.0.0.1:5000/like', true);
                 xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
-                xhr.onload = function(){
-                    if (xhr.status === 200){
-                        const response = JSON.perse(xhr.responseText);
+                xhr.onload = function () {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
                         console.log(response.status);
-                    }
+                    } 
                 };
-                const data = JSON.stringify({ 'postId': this.dataset.postId })
+                const data = JSON.stringify({ 'postId': this.dataset.postId });
                 xhr.send(data);
             })
         })
